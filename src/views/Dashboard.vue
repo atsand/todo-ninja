@@ -2,8 +2,8 @@
   <div class="dashboard">
     <h1 class="subheading grey--text">Dashboard</h1>
     <v-container class="my-5">
-      <v-card :class="setClass(project.status)" v-for="(project,index) in projects" :key="index" class="pa-3 my-3">
-        <v-layout wrap>
+      <v-card v-for="project in projects" :key="project.title">
+        <v-layout row wrap :class="`pa-3 project ${project.status}`">
           <v-flex xs12 md6>
             <div class="caption grey--text">Project Title</div>
             <div>{{ project.title }}</div>
@@ -17,11 +17,14 @@
             <div>{{ project.dueDate }}</div>
           </v-flex>
           <v-flex xs2 sm4 md2>
-            <div class="caption grey--text">Status</div>
-            <div>{{ project.status }}</div>
+            <div class="right">
+              <v-chip small :class="`${project.status} white--text caption my-2`">
+                {{project.status}}
+              </v-chip>
+            </div>
           </v-flex>
-          
         </v-layout>
+      <v-divider></v-divider>
       </v-card>
     </v-container>
   </div>
@@ -35,11 +38,11 @@
     data(){
       return {
         projects:[
-          {title: 'Project1', person: 'Aaron', dueDate: '1/05/19', status: 'ongoing'},
-          {title: 'Project2', person: 'Austin', dueDate: '3/13/19', status: 'ongoing'},
-          {title: 'Project3', person: 'Anna', dueDate: '12/20/18', status: 'complete'},
-          {title: 'Project4', person: 'Allison', dueDate: '3/09/19', status: 'complete'},
-          {title: 'Project5', person: 'Mom', dueDate: '12/08/18', status: 'ongoing'}
+          {title: 'Project1', person: 'Aaron', dueDate: '1/05/19', status: 'overdue', content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis dolore totam nemo aliquid sit dolores cupiditate? Porro, facilis. Quia saepe illo quisquam consequatur aperiam expedita placeat earum nisi aliquam doloribus.'},
+          {title: 'Project2', person: 'Austin', dueDate: '3/13/19', status: 'ongoing', content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis dolore totam nemo aliquid sit dolores cupiditate? Porro, facilis. Quia saepe illo quisquam consequatur aperiam expedita placeat earum nisi aliquam doloribus.'},
+          {title: 'Project3', person: 'Anna', dueDate: '12/20/18', status: 'complete', content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis dolore totam nemo aliquid sit dolores cupiditate? Porro, facilis. Quia saepe illo quisquam consequatur aperiam expedita placeat earum nisi aliquam doloribus.'},
+          {title: 'Project4', person: 'Allison', dueDate: '3/09/19', status: 'complete', content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis dolore totam nemo aliquid sit dolores cupiditate? Porro, facilis. Quia saepe illo quisquam consequatur aperiam expedita placeat earum nisi aliquam doloribus.'},
+          {title: 'Project5', person: 'Thomas', dueDate: '12/08/18', status: 'ongoing', content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis dolore totam nemo aliquid sit dolores cupiditate? Porro, facilis. Quia saepe illo quisquam consequatur aperiam expedita placeat earum nisi aliquam doloribus.'}
         ]
       }
     },
@@ -48,8 +51,33 @@
         if(status == 'complete'){
           return 'light-green darken-2 white--text';
         }
-        return 'light-blue darken-2 white--text'
+        else if(status == 'overdue'){
+          return 'red darken-2 white--text';
+        }
+        return 'light-blue darken-2 white--text';
       }
     }
   }
 </script>
+
+<style scoped>
+.project.complete{
+  border-left: 8px solid #3cd1c2;
+}
+.project.ongoing{
+  border-left: 8px solid orange;
+}
+.project.overdue{
+  border-left: 8px solid tomato;
+}
+.v-chip.complete{
+  background: #3cd1c2;
+}
+.v-chip.ongoing{
+  background: orange;
+}
+.v-chip.overdue{
+  background: tomato;
+}
+</style>
+
