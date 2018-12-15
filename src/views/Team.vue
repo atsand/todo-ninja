@@ -4,9 +4,11 @@
     <v-container class="my-5">
       <v-layout row wrap>
         <v-flex xs12 sm6 md4 lg3 flat v-for="person in team" :key="person.name">
-          <v-card flat class="text-xs-center ma-3">
+          <v-card class="text-xs-center ma-3">
             <v-responsive class="pt-4">
-              image goes here
+              <v-avatar size="100" class="grey lighten-2">
+                <img :src="person.avatar"/>
+              </v-avatar>
             </v-responsive>
             <v-card-text>
               <div class="subheading">{{person.name}}</div>
@@ -32,11 +34,11 @@
     data() {
       return {
         team: [
-        { name: 'Aaron', role: 'Web Developer'},
-        { name: 'Bob', role: 'Graphic Designer'},
-        { name: 'Teddy', role: 'Web Developer'},
-        { name: 'Shelly', role: 'Social Media Maverick'},
-        { name: 'Jimbo', role: 'Sales Guru'}
+        { name: 'Aaron', role: 'Web Developer', avatar: '/avatar-1.png'},
+        { name: 'Bob', role: 'Graphic Designer', avatar: '/avatar-2.png'},
+        { name: 'Teddy', role: 'Web Developer', avatar: '/avatar-3.png'},
+        { name: 'Shelly', role: 'Social Media Maverick', avatar: '/avatar-4.png'},
+        { name: 'Jimbo', role: 'Sales Guru', avatar: '/avatar-5.png'}
         ]
       }
     }
