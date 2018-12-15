@@ -2,6 +2,18 @@
   <div class="dashboard">
     <h1 class="subheading grey--text">Dashboard</h1>
     <v-container class="my-5">
+
+      <v-layout row class="mb-3">
+        <v-btn small flat color="grey" @click="sortBy('title')">
+          <v-icon left small>folder</v-icon>
+          <span class="caption text-lowercase">By Project Name</span>
+        </v-btn>
+        <v-btn small flat color="grey" @click="sortBy('person')">
+          <v-icon left small>person</v-icon>
+          <span class="caption text-lowercase">By Person</span>
+        </v-btn>
+      </v-layout>
+
       <v-card v-for="project in projects" :key="project.title">
         <v-layout row wrap :class="`pa-3 project ${project.status}`">
           <v-flex xs12 md6>
@@ -47,15 +59,19 @@
       }
     },
     methods:{
-      setClass(status){
-        if(status == 'complete'){
-          return 'light-green darken-2 white--text';
-        }
-        else if(status == 'overdue'){
-          return 'red darken-2 white--text';
-        }
-        return 'light-blue darken-2 white--text';
+      sortBy(prop){
+        this.projects.sort((a,b) => a[prop] <b[prop] ? -1: 1);
       }
+      //For conditional styling using a method
+      // setClass(status){
+      //   if(status == 'complete'){
+      //     return 'light-green darken-2 white--text';
+      //   }
+      //   else if(status == 'overdue'){
+      //     return 'red darken-2 white--text';
+      //   }
+      //   return 'light-blue darken-2 white--text';
+      // }
     }
   }
 </script>
