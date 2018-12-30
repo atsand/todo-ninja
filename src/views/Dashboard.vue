@@ -12,6 +12,13 @@
           <span>Sort By Project Name</span>
         </v-tooltip>
         <v-tooltip top>
+          <v-btn small flat color="grey" slot="activator" @click="sortBy('dueDate')">
+            <v-icon left small>alarm</v-icon>
+            <span class="caption text-capitalize">By Due Date</span>
+          </v-btn>
+          <span>Sorty By Due Date</span>
+        </v-tooltip>
+        <v-tooltip top>
           <v-btn small flat color="grey" slot="activator" @click="sortBy('person')">
             <v-icon left small>person</v-icon>
             <span class="caption text-capitalize">By Person</span>
@@ -34,7 +41,7 @@
             <div class="caption grey--text">Due by</div>
             <div>{{ project.dueDate }}</div>
           </v-flex>
-          <v-flex xs2 sm4 md2>
+          <v-flex xs12 sm4 md2>
             <div class="right">
               <v-chip small :class="`${project.status} white--text caption my-2`">
                 {{project.status}}
@@ -61,12 +68,20 @@
           {title: 'Project3', person: 'Teddy', dueDate: '12/20/18', status: 'complete', content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis dolore totam nemo aliquid sit dolores cupiditate? Porro, facilis. Quia saepe illo quisquam consequatur aperiam expedita placeat earum nisi aliquam doloribus.'},
           {title: 'Project4', person: 'Shelly', dueDate: '3/09/19', status: 'complete', content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis dolore totam nemo aliquid sit dolores cupiditate? Porro, facilis. Quia saepe illo quisquam consequatur aperiam expedita placeat earum nisi aliquam doloribus.'},
           {title: 'Project5', person: 'Jimbo', dueDate: '12/08/18', status: 'ongoing', content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis dolore totam nemo aliquid sit dolores cupiditate? Porro, facilis. Quia saepe illo quisquam consequatur aperiam expedita placeat earum nisi aliquam doloribus.'}
-        ]
+        ],
+        sortedBy:''
       }
     },
     methods:{
       sortBy(prop){
-        this.projects.sort((a,b) => a[prop] <b[prop] ? -1: 1);
+        if(this.sortedBy == prop){
+          this.sortedBy = '';
+          this.projects.sort((a,b) => a[prop] > b[prop] ? -1: 1);
+        }
+        else{
+          this.sortedBy = prop;
+          this.projects.sort((a,b) => a[prop] < b[prop] ? -1: 1);
+        }
       }
       //For conditional styling using a method
       // setClass(status){

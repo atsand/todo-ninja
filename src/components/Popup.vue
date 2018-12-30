@@ -1,16 +1,34 @@
 <template>
     <v-dialog max-width="600px">
-        <v-btn slot="activator" flat class="success">Add New Project</v-btn>
+        <v-btn slot="activator" flat class="success" @click="resetModal">Add New Project</v-btn>
         <v-card>
             <v-card-title>
                 <h2>Add a New Project</h2>
             </v-card-title>
             <v-card-text>
-                <v-form class="px-3">
-                    <v-text-field label="Title" v-model="title" prepend-icon="folder"></v-text-field>
-                    <v-textarea label="Information" v-model="content" prepend-icon="edit"></v-textarea>
+                <v-form class="px-3" ref="form">
+                    <v-text-field
+                        label="Title" v-model="title"
+                        prepend-icon="folder"
+                        :rules="[rules.required, rules.length]"
+                    >
+                    </v-text-field>
+                    <v-textarea
+                        label="Information"
+                        v-model="content"
+                        prepend-icon="edit"
+                        :rules="[rules.required, rules.length]"
+                    >
+                    </v-textarea>
                     <v-menu>
-                        <v-text-field slot="activator" label="Due Date" prepend-icon="date_range" :value="formattedDate"></v-text-field>
+                        <v-text-field
+                            slot="activator"
+                            label="Due Date"
+                            prepend-icon="date_range"
+                            :value="formattedDate"
+                            :rules="[rules.required]"
+                        >
+                        </v-text-field>
                         <v-date-picker v-model="due"></v-date-picker>
                     </v-menu>
                     <v-spacer></v-spacer>
@@ -28,12 +46,24 @@ export default {
         return{
             title:'',
             content:'',
-            due:null
+            due:null,
+            rules:{
+                required: value => !!value || 'Required',
+                length: value => value.length >= 3 || 'Minimum length is 3 Characters'
+            }
         }
     },
     methods: {
+        resetModal(){
+            this.title = '';
+            this.content = '';
+            this.due = null;
+            this.$refs.form.resetValidation();
+        },
         submit() {
-            alert(this.title + this.content)
+            if(this.$refs.form.validate()){
+                console.log(this.title, this.content, this.formattedDate)
+            }
         }
     },
     computed:{
