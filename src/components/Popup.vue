@@ -1,5 +1,5 @@
 <template>
-    <v-dialog max-width="600px">
+    <v-dialog max-width="600px" v-model="dialog">
         <v-btn slot="activator" flat class="success" @click="resetModal">Add New Project</v-btn>
         <v-card>
             <v-card-title>
@@ -32,7 +32,14 @@
                         <v-date-picker v-model="due"></v-date-picker>
                     </v-menu>
                     <v-spacer></v-spacer>
-                    <v-btn flat class="success mx-0 mt-3" @click="submit">Add Project</v-btn>
+                    <v-btn
+                        flat
+                        class="success mx-0 mt-3"
+                        @click="submit"
+                        :loading="loading"
+                    >
+                        Add Project
+                    </v-btn>
                 </v-form>
             </v-card-text>
         </v-card>
@@ -41,6 +48,8 @@
 
 <script>
 import moment from 'moment'
+import db from '@/firebase.js'
+
 export default {
     data(){
         return{
@@ -50,7 +59,9 @@ export default {
             rules:{
                 required: value => !!value || 'Required',
                 length: value => value.length >= 3 || 'Minimum length is 3 Characters'
-            }
+            },
+            loading: false,
+            dialog: false
         }
     },
     methods: {
@@ -62,7 +73,19 @@ export default {
         },
         submit() {
             if(this.$refs.form.validate()){
-                console.log(this.title, this.content, this.formattedDate)
+                this.loading = true;
+                const project = {
+                    title: this.title,
+                    content: this.content,
+                    dueDate: this.formattedDate,
+                    person: 'The Net Ninja',
+                    status: 'ongoing'
+                }
+                db.collection('projects').add(project).then(() => {
+                this.loading = false;
+                this.dialog = false;
+                this.$emit('projectAdded');
+                })
             }
         }
     },
