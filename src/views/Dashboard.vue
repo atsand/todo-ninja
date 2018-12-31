@@ -56,19 +56,12 @@
 </template>
 
 <script>
+import db from '@/firebase.js'
 
   export default {
-    components: {
-    },
     data(){
       return {
-        projects:[
-          {title: 'Project1', person: 'Aaron', dueDate: '1/05/19', status: 'overdue', content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis dolore totam nemo aliquid sit dolores cupiditate? Porro, facilis. Quia saepe illo quisquam consequatur aperiam expedita placeat earum nisi aliquam doloribus.'},
-          {title: 'Project2', person: 'Bob', dueDate: '3/13/19', status: 'ongoing', content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis dolore totam nemo aliquid sit dolores cupiditate? Porro, facilis. Quia saepe illo quisquam consequatur aperiam expedita placeat earum nisi aliquam doloribus.'},
-          {title: 'Project3', person: 'Teddy', dueDate: '12/20/18', status: 'complete', content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis dolore totam nemo aliquid sit dolores cupiditate? Porro, facilis. Quia saepe illo quisquam consequatur aperiam expedita placeat earum nisi aliquam doloribus.'},
-          {title: 'Project4', person: 'Shelly', dueDate: '3/09/19', status: 'complete', content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis dolore totam nemo aliquid sit dolores cupiditate? Porro, facilis. Quia saepe illo quisquam consequatur aperiam expedita placeat earum nisi aliquam doloribus.'},
-          {title: 'Project5', person: 'Jimbo', dueDate: '12/08/18', status: 'ongoing', content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis dolore totam nemo aliquid sit dolores cupiditate? Porro, facilis. Quia saepe illo quisquam consequatur aperiam expedita placeat earum nisi aliquam doloribus.'}
-        ],
+        projects:[],
         sortedBy:''
       }
     },
@@ -93,6 +86,20 @@
       //   }
       //   return 'light-blue darken-2 white--text';
       // }
+    },
+    created(){
+      db.collection('projects').onSnapshot(response => {
+        const changes = response.docChanges();
+
+        changes.forEach(change => {
+          if(change.type === 'added'){
+            this.projects.push({
+              ...change.doc.data(),
+              id: change.doc.id
+            })
+          }
+        })
+      })
     }
   }
 </script>
